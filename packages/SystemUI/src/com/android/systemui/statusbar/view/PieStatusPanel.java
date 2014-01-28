@@ -74,18 +74,18 @@ public class PieStatusPanel {
         mPanelParents[NOTIFICATIONS_PANEL] = (ViewGroup) mNotificationPanel.getParent();
         mPanelParents[QUICK_SETTINGS_PANEL] = (ViewGroup) mQS.getParent();
 
-        mContentHeader = (View) mPanel.getBar().mContainer.findViewById(R.id.content_header);
+        mContentHeader = (View) mPanel.getBar().mPieContainer.findViewById(R.id.content_header);
 
-        mContentFrame = (View) mPanel.getBar().mContainer.findViewById(R.id.content_frame);
-        mScrollView = (ScrollView) mPanel.getBar().mContainer.findViewById(R.id.content_scroll);
+        mContentFrame = (View) mPanel.getBar().mPieContainer.findViewById(R.id.content_frame);
+        mScrollView = (ScrollView) mPanel.getBar().mPieContainer.findViewById(R.id.content_scroll);
         mScrollView.setOnTouchListener(new ViewOnTouchListener());
         mContentFrame.setOnTouchListener(new ViewOnTouchListener());
 
         mNotificationData = mPanel.getBar().mNotificationData;
-        mClearButton = (ImageView) mPanel.getBar().mContainer.findViewById(R.id.clear_all_button);
+        mClearButton = (ImageView) mPanel.getBar().mPieContainer.findViewById(R.id.clear_all_button);
         mClearButton.setOnClickListener(mClearButtonListener);
 
-        mPanel.getBar().mContainer.setVisibility(View.GONE);
+        mPanel.getBar().mPieContainer.setVisibility(View.GONE);
     }
 
     class ViewOnTouchListener implements OnTouchListener {
@@ -304,7 +304,7 @@ public class PieStatusPanel {
     }
 
     private void updateContainer(boolean visible) {
-        mPanel.getBar().mContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mPanel.getBar().mPieContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
         updatePanelConfiguration();
     }
 

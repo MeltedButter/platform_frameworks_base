@@ -149,9 +149,7 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel,
                 Settings.System.PIE_STICK, 1) != 0) {
 
             // Get original offset
-            int gravityIndex = findGravityOffset(convertPieGravitytoGravity(
-                    Settings.System.getInt(mContext.getContentResolver(),
-                            Settings.System.PIE_GRAVITY, 3)));
+            int gravityIndex = findGravityOffset(convertPieGravitytoGravity(mStatusBar.mPieGravity));
 
             // Orient Pie to that place
             reorient(gravityArray[gravityIndex], false);
@@ -208,13 +206,11 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel,
     public void reorient(int orientation, boolean storeSetting) {
         mOrientation = orientation;
         mWindowManager.removeView(mTrigger);
-        mWindowManager.addView(mTrigger, BaseStatusBar
-                .getPieTriggerLayoutParams(mContext, mOrientation));
+        mWindowManager.addView(mTrigger, mStatusBar.pieGetTriggerLayoutParams(mContext, mOrientation));
         show(mShowing);
         if (storeSetting) {
             int gravityOffset = mOrientation;
-            if (Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_STICK, 1) == 1) {
+            if (mStatusBar.mPieStick) {
 
                 gravityOffset = findGravityOffset(mOrientation);
                 switch (mDisplay.getRotation()) {
