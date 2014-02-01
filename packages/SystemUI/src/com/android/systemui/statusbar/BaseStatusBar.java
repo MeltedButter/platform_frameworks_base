@@ -78,6 +78,8 @@ import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.view.PieExpandPanel;
 import com.android.systemui.statusbar.view.PieStatusPanel;
 
+import meltedbutter.provider.MBSettings;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -1176,15 +1178,15 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         // Track settings
         resolver.registerContentObserver(Settings.System.getUriFor(
-                Settings.System.PIE_CONTROLS), false, mPieObserver);
+                MBSettings.PIE_CONTROLS), false, mPieObserver);
         resolver.registerContentObserver(Settings.System.getUriFor(
-                Settings.System.PIE_TRIGGER), false, mPieObserver);
+                MBSettings.PIE_TRIGGER), false, mPieObserver);
         resolver.registerContentObserver(Settings.System.getUriFor(
-                Settings.System.PIE_GRAVITY), false, mPieObserver);
+                MBSettings.PIE_GRAVITY), false, mPieObserver);
         resolver.registerContentObserver(Settings.System.getUriFor(
-                Settings.System.PIE_STICK), false, mPieObserver);
+                MBSettings.PIE_STICK), false, mPieObserver);
         resolver.registerContentObserver(Settings.System.getUriFor(
-                Settings.System.PIE_CENTER), false, mPieObserver);
+                MBSettings.PIE_CENTER), false, mPieObserver);
 
         pieRefreshSettings();
     }
@@ -1192,11 +1194,11 @@ public abstract class BaseStatusBar extends SystemUI implements
     private void pieRefreshSettings() {
         ContentResolver resolver = mContext.getContentResolver();
 
-        mPieEnabled = Settings.System.getInt(resolver, Settings.System.PIE_CONTROLS, 0) != 0;
-        mPieGravity = Settings.System.getInt(resolver, Settings.System.PIE_GRAVITY, 3);
-        mPieTriggerSize = Settings.System.getFloat(resolver, Settings.System.PIE_TRIGGER, 1f);
-        mPieStick = Settings.System.getInt(resolver, Settings.System.PIE_STICK, 1) != 0;
-        mPieCenter = Settings.System.getInt(resolver, Settings.System.PIE_CENTER, 1) != 0;
+        mPieEnabled = Settings.System.getInt(resolver, MBSettings.PIE_CONTROLS, 0) != 0;
+        mPieGravity = Settings.System.getInt(resolver, MBSettings.PIE_GRAVITY, 3);
+        mPieTriggerSize = Settings.System.getFloat(resolver, MBSettings.PIE_TRIGGER, 1f);
+        mPieStick = Settings.System.getInt(resolver, MBSettings.PIE_STICK, 1) != 0;
+        mPieCenter = Settings.System.getInt(resolver, MBSettings.PIE_CENTER, 1) != 0;
 
         pieRemove();
         if (mPieEnabled) {

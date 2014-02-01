@@ -44,6 +44,8 @@ import android.widget.FrameLayout;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.PieControl.OnNavButtonPressedListener;
 
+import meltedbutter.provider.MBSettings;
+
 public class PieControlPanel extends FrameLayout implements StatusBarPanel,
         OnNavButtonPressedListener {
 
@@ -146,7 +148,7 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel,
 
     public void bumpConfiguration() {
         if (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_STICK, 1) != 0) {
+                MBSettings.PIE_STICK, 1) != 0) {
 
             // Get original offset
             int gravityIndex = findGravityOffset(convertPieGravitytoGravity(mStatusBar.mPieGravity));
@@ -226,7 +228,7 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel,
                 }
             }
             Settings.System.putInt(mContext.getContentResolver(),
-                    Settings.System.PIE_GRAVITY, convertGravitytoPieGravity(gravityOffset));
+                    MBSettings.PIE_GRAVITY, convertGravitytoPieGravity(gravityOffset));
         }
     }
 
