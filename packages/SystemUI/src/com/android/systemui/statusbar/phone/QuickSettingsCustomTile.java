@@ -26,12 +26,12 @@ import android.widget.TextView;
 import com.android.systemui.R;
 
 import meltedbutter.quicksettings.ITile;
+import meltedbutter.quicksettings.ITileControls;
 
 class QuickSettingsCustomTile extends QuickSettingsTileView {
     private final ITile mTile;
-    private final boolean mShow;
 
-    QuickSettingsCustomTile(Context context, AttributeSet attrs, ITile tile) {
+    QuickSettingsCustomTile(Context context, AttributeSet attrs, ITileControls controls, ITile tile) {
         super(context, attrs);
 
         setLayoutParams(new FrameLayout.LayoutParams(
@@ -43,13 +43,9 @@ class QuickSettingsCustomTile extends QuickSettingsTileView {
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT));
 
-        mShow = tile.construct(context, this, (ImageView) findViewById(R.id.image),
-                (TextView) findViewById(R.id.text));
+        tile.construct(context, controls, this,
+                (ImageView) findViewById(R.id.image), (TextView) findViewById(R.id.text));
         mTile = tile;
-    }
-
-    boolean shouldShow() {
-        return mShow;
     }
 
     @Override
