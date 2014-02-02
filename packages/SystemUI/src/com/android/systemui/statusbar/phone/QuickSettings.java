@@ -75,6 +75,8 @@ import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.RotationLockController;
 
+import meltedbutter.quicksettings.HelloTile;
+
 import java.util.ArrayList;
 
 /**
@@ -268,6 +270,7 @@ class QuickSettings {
         addUserTiles(mContainerView, inflater);
         addSystemTiles(mContainerView, inflater);
         addTemporaryTiles(mContainerView, inflater);
+        addCustomTiles(mContainerView);
 
         queryForUserInformation();
         queryForSslCaCerts();
@@ -776,6 +779,13 @@ class QuickSettings {
                 new QuickSettingsModel.BasicRefreshCallback(sslCaCertWarningTile)
                         .setShowWhenEnabled(true));
         parent.addView(sslCaCertWarningTile);
+    }
+
+    private void addCustomTiles(final ViewGroup parent) {
+        QuickSettingsCustomTile helloTile = new QuickSettingsCustomTile(mContext, null, new HelloTile());
+        if (helloTile.shouldShow()) {
+            parent.addView(helloTile);
+        }
     }
 
     void updateResources() {
