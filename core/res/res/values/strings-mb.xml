@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Expanded desktop -->
+    <string name="global_actions_toggle_expanded_desktop">Expanded desktop</string>
+    <!-- Expanded desktop is ON -->
+    <string name="global_actions_expanded_desktop_on_status">Expanded desktop is ON</string>
+    <!-- Expanded desktop is OFF -->
+    <string name="global_actions_expanded_desktop_off_status">Expanded desktop is OFF</string>
+</resources>

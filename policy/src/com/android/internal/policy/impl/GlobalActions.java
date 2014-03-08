@@ -22,6 +22,8 @@ import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.telephony.TelephonyProperties;
 import com.android.internal.R;
 
+import meltedbutter.provider.MBSettings;
+
 import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -93,12 +95,14 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private Action mSilentModeAction;
     private ToggleAction mAirplaneModeOn;
+    private ToggleAction mExpandedDesktopOn;
 
     private MyAdapter mAdapter;
 
     private boolean mKeyguardShowing = false;
     private boolean mDeviceProvisioned = false;
     private ToggleAction.State mAirplaneState = ToggleAction.State.Off;
+    private ToggleAction.State mExpandedDesktopState = ToggleAction.State.Off;
     private boolean mIsWaitingForEcmExit = false;
     private boolean mHasTelephony;
     private boolean mHasVibrator;
@@ -131,6 +135,9 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         mContext.getContentResolver().registerContentObserver(
                 Settings.Global.getUriFor(Settings.Global.AIRPLANE_MODE_ON), true,
                 mAirplaneModeObserver);
+        mContext.getContentResolver().registerContentObserver(
+                Settings.Global.getUriFor(MBSettings.EXPANDED_DESKTOP_STATE), true,
+                mExpandedDesktopObserver);
         Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         mHasVibrator = vibrator != null && vibrator.hasVibrator();
 
@@ -233,6 +240,27 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         };
         onAirplaneModeChanged();
 
+        mExpandedDesktopOn = new ToggleAction(
+                R.drawable.ic_lock_expanded_desktop,
+                R.drawable.ic_lock_expanded_desktop_off,
+                R.string.global_actions_toggle_expanded_desktop,
+                R.string.global_actions_expanded_desktop_on_status,
+                R.string.global_actions_expanded_desktop_off_status) {
+
+            void onToggle(boolean on) {
+                changeExpandedDesktopSystemSetting(on);
+            }
+
+            public boolean showDuringKeyguard() {
+                return false;
+            }
+
+            public boolean showBeforeProvisioning() {
+                return false;
+            }
+        };
+        onExpandedDesktopChanged();
+
         mItems = new ArrayList<Action>();
 
         // first: power off
@@ -262,6 +290,9 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
         // next: airplane mode
         mItems.add(mAirplaneModeOn);
+
+        // next: expanded desktop
+        mItems.add(mExpandedDesktopOn);
 
         // next: bug report, if enabled
         if (Settings.Global.getInt(mContext.getContentResolver(),
@@ -876,6 +907,13 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
     };
 
+    private ContentObserver mExpandedDesktopObserver = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            onExpandedDesktopChanged();
+        }
+    };
+
     private static final int MESSAGE_DISMISS = 0;
     private static final int MESSAGE_REFRESH = 1;
     private static final int MESSAGE_SHOW = 2;
@@ -912,6 +950,15 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         mAirplaneModeOn.updateState(mAirplaneState);
     }
 
+    private void onExpandedDesktopChanged() {
+        boolean expandedDesktopOn = Settings.System.getInt(
+                mContext.getContentResolver(),
+                MBSettings.EXPANDED_DESKTOP_STATE,
+                0) != 0;
+        mExpandedDesktopState = expandedDesktopOn ? ToggleAction.State.On : ToggleAction.State.Off;
+        mExpandedDesktopOn.updateState(mExpandedDesktopState);
+    }
+
     /**
      * Change the airplane mode system setting
      */
@@ -927,6 +974,17 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         if (!mHasTelephony) {
             mAirplaneState = on ? ToggleAction.State.On : ToggleAction.State.Off;
         }
+    }
+
+    /**
+     * Change the expanded desktop system setting
+     */
+    private void changeExpandedDesktopSystemSetting(boolean on) {
+        Settings.System.putInt(
+                mContext.getContentResolver(),
+                MBSettings.EXPANDED_DESKTOP_STATE,
+                on ? 1 : 0);
+        mExpandedDesktopState = on ? ToggleAction.State.On : ToggleAction.State.Off;
     }
 
     private static final class GlobalActionsDialog extends Dialog implements DialogInterface {

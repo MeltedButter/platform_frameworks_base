@@ -5,7 +5,9 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
-            
+
+LOCAL_JAVA_LIBRARIES := meltedbutter
+
 LOCAL_MODULE := android.policy
 
 include $(BUILD_JAVA_LIBRARY)
