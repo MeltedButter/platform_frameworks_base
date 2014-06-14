@@ -256,7 +256,7 @@
     <string name="permlab_uninstall_shortcut" msgid="4729634524044003699">"解除安裝捷徑"</string>
     <string name="permdesc_uninstall_shortcut" msgid="6745743474265057975">"允許應用程式繞過用戶授權直接移除主畫面捷徑。"</string>
     <string name="permlab_processOutgoingCalls" msgid="3906007831192990946">"重新設定撥出電話的路徑"</string>
-    <string name="permdesc_processOutgoingCalls" msgid="5331318931937402040">"允許應用程式處理撥出電話及更改撥打的號碼。這項權限允許應用程式監控、轉接或阻止撥出的電話。"</string>
+    <string name="permdesc_processOutgoingCalls" msgid="5156385005547315876">"允許應用程式在撥出電話時查看所撥打的電話號碼，並選擇將電話重新導向至另一個號碼或完全中斷通話。"</string>
     <string name="permlab_receiveSms" msgid="8673471768947895082">"接收短訊 (SMS)"</string>
     <string name="permdesc_receiveSms" msgid="6424387754228766939">"允許應用程式接收和處理短訊。這表示應用程式可監控傳送至您裝置的訊息，或在您閱讀訊息前擅自刪除訊息。"</string>
     <string name="permlab_receiveMms" msgid="1821317344668257098">"接收短訊 (MMS)"</string>
@@ -816,6 +816,7 @@
     <string name="sipAddressTypeHome" msgid="6093598181069359295">"家用"</string>
     <string name="sipAddressTypeWork" msgid="6920725730797099047">"工作"</string>
     <string name="sipAddressTypeOther" msgid="4408436162950119849">"其他"</string>
+    <string name="quick_contacts_not_available" msgid="746098007828579688">"找不到可以查看這位聯絡人的應用程式。"</string>
     <string name="keyguard_password_enter_pin_code" msgid="3037685796058495017">"輸入 PIN 碼"</string>
     <string name="keyguard_password_enter_puk_code" msgid="4800725266925845333">"輸入 PUK 碼和新 PIN 碼"</string>
     <string name="keyguard_password_enter_puk_prompt" msgid="1341112146710087048">"PUK 碼"</string>
