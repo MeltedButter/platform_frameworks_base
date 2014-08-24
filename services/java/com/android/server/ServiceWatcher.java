@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -179,9 +180,17 @@ public class ServiceWatcher implements ServiceConnection {
                     PackageInfo pInfo;
                     pInfo = mPm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
                     if (!isSignatureMatch(pInfo.signatures)) {
-                        Log.w(mTag, packageName + " resolves service " + mAction
-                                + ", but has wrong signature, ignoring");
-                        continue;
+                        int mask = ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP;
+                        ApplicationInfo aInfo;
+                        aInfo = mPm.getApplicationInfo(packageName, mask);
+                        if ((aInfo.flags & mask) != 0) {
+                            Log.w(mTag, packageName + " resolves service " + mAction
+                                    + ", but has wrong signature, still accepting because it's system");
+                        } else {
+                            Log.w(mTag, packageName + " resolves service " + mAction
+                                    + ", but has wrong signature, ignoring");
+                            continue;
+                        }
                     }
                 } catch (NameNotFoundException e) {
                     Log.wtf(mTag, e);

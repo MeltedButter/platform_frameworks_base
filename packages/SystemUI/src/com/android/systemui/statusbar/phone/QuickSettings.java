@@ -75,6 +75,9 @@ import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.RotationLockController;
 
+import meltedbutter.quicksettings.HelloTile;
+import meltedbutter.quicksettings.ITileControls;
+
 import java.util.ArrayList;
 
 /**
@@ -114,6 +117,13 @@ class QuickSettings {
     // configuration change)
     private final ArrayList<QuickSettingsTileView> mDynamicSpannedTiles =
             new ArrayList<QuickSettingsTileView>();
+
+    private ITileControls mControlInterface = new ITileControls() {
+        @Override
+        public void closeShade() {
+            collapsePanels();
+        }
+    };
 
     public QuickSettings(Context context, QuickSettingsContainerView container) {
         mDevicePolicyManager
@@ -267,6 +277,7 @@ class QuickSettings {
 
         addUserTiles(mContainerView, inflater);
         addSystemTiles(mContainerView, inflater);
+        addCustomTiles(mContainerView);
         addTemporaryTiles(mContainerView, inflater);
 
         queryForUserInformation();
@@ -776,6 +787,12 @@ class QuickSettings {
                 new QuickSettingsModel.BasicRefreshCallback(sslCaCertWarningTile)
                         .setShowWhenEnabled(true));
         parent.addView(sslCaCertWarningTile);
+    }
+
+    private void addCustomTiles(final ViewGroup parent) {
+        QuickSettingsCustomTile helloTile = new QuickSettingsCustomTile(
+                mContext, null, mControlInterface, new HelloTile());
+        parent.addView(helloTile);
     }
 
     void updateResources() {
