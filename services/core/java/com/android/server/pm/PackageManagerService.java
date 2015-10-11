@@ -6772,18 +6772,18 @@ public class PackageManagerService extends IPackageManager.Stub {
                     // The signature has changed, but this package is in the system
                     // image...  let's recover!
                     pkgSetting.signatures.mSignatures = pkg.mSignatures;
-                    // However...  if this package is part of a shared user, but it
-                    // doesn't match the signature of the shared user, let's fail.
-                    // What this means is that you can't change the signatures
-                    // associated with an overall shared user, which doesn't seem all
-                    // that unreasonable.
+                    // If this package is part of a shared user, but it
+                    // doesn't match the signature of the shared user, change the
+                    // signatures associated with the overall shared user, which
+                    // doesn't seem all that unreasonable when going from a
+                    // factory ROM to a custom ROM.
                     if (pkgSetting.sharedUser != null) {
                         if (compareSignatures(pkgSetting.sharedUser.signatures.mSignatures,
                                               pkg.mSignatures) != PackageManager.SIGNATURE_MATCH) {
-                            throw new PackageManagerException(
-                                    INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES,
-                                            "Signature mismatch for shared user : "
-                                            + pkgSetting.sharedUser);
+                            String msg = "Signature mismatch for shared user : "
+                                + pkgSetting.sharedUser;
+                            reportSettingsProblem(Log.WARN, msg);
+                            pkgSetting.sharedUser.signatures.assignSignatures(pkg.mSignatures);
                         }
                     }
                     // File a report about this.
